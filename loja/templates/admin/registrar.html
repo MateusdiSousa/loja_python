@@ -5,6 +5,7 @@
 
 {% from "formulario.html" import render_field %}
 <div class="container">
+  {% include 'menssages.html' %}
     <form action="registrar" method=post>
       <div>
         {{ render_field(form.name, class='form-control') }}

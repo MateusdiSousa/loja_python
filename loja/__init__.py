@@ -17,3 +17,4 @@ db.init_app(app)
 bcrypt = Bcrypt(app)
 
 from loja.admin import rotas
+from loja.produtos import rotas

@@ -8,9 +8,16 @@
     <title>{{title}}</title>
 </head>
 <body>
+   
     {% block conteudo %}
 
     {% endblock conteudo %}
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 mt-2 text text-center" >
+            {% include 'menssages.html' %}
+        </div>
+    </div>
 
     <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js')}}" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>

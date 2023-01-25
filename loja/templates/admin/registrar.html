@@ -5,16 +5,21 @@
 
 {% from "formulario.html" import render_field %}
 <div class="container">
-  {% include 'menssages.html' %}
-    <form action="registrar" method=post>
-      <div>
-        {{ render_field(form.name, class='form-control') }}
-        {{ render_field(form.username,class='form-control') }}
-        {{ render_field(form.email,class='form-control') }}
-        {{ render_field(form.password, class='form-control') }}
-        {{ render_field(form.confirm, class='form-control') }}
-      </div>
-      <p><input class= 'btn btn-primary' type=submit value=Registrar>
-    </form>
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+    
+      <form action="registrar" method=post>
+        <div>
+          {{ render_field(form.name, class='form-control') }}
+          {{ render_field(form.username,class='form-control') }}
+          {{ render_field(form.email,class='form-control') }}
+          {{ render_field(form.password, class='form-control') }}
+          {{ render_field(form.confirm, class='form-control') }}
+        </div>
+        <p><input class= 'btn btn-primary' type=submit value=Registrar>
+      </form>
+    </div>
+  </div>
 </div>
 {% endblock conteudo %}

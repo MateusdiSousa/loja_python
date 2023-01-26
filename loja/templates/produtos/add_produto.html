@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+<div class="container mt-2">
+    <div class="col-md-3"></div>
+    <div class="col-md-8">
+       <h2 class="text-center bg-primary p-2" >Adicionar Produtos</h2>
+        {% from 'formulario.html' import render_field%}
+        <form action="" enctype="multipart/form-data" method="POST">
+            {{ render_field(form.name, class='form-control', placeholder='Nome do Produto')}}
+            {{ render_field(form.color, class='form-control', placeholder='Cor do Produto')}}
+            {{ render_field(form.discount, class='form-control', placeholder='Desconto')}}
+            {{ render_field(form.discription, class='form-control', placeholder='Descrição do Produto')}}
+            {{ render_field(form.price, class='form-control', placeholder='Preço do Produto')}}
+            {{ render_field(form.stock, class='form-control', placeholder='Estoque')}}
+            <div class="container">
+                <div class="row">
+                    <div>{{ render_field(form.image_1, class='form-control', placeholder='')}}</div>
+                    <div>{{ render_field(form.image_2, class='form-control', placeholder='')}}</div>
+                    <div>{{ render_field(form.image_3, class='form-control', placeholder='')}}</div>
+                </div>
+            </div>
+            <button class="btn btn-primary mt-4" type="submit">Cadastrar Produto</button>
+        </form>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+
+{% endblock conteudo %}

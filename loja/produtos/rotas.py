@@ -1,7 +1,8 @@
 from flask import request, redirect, render_template, url_for, flash
 from .forms import Addprodutos
-from loja import app, db
+from loja import app, db, photos
 from .models import Marca, Categoria
+import os
 
 @app.route("/add_marca", methods = ['GET', 'POST'])
 def add_marca():
@@ -27,8 +28,22 @@ def add_cat():
         return redirect(url_for('add_marca'))
     return render_template("produtos/add_marca.html", title='Cadastrar Categoria')
 
-@app.route("/add_produto", methods = ['GET', 'POST'])
+@app.route("/add_produto", methods=['GET','POST'])
 def add_produto():
+    marcas = Marca.query.all()
+    categorias = Categoria.query.all()
     form = Addprodutos(request.form)
-    
-    return render_template("produtos/add_produto.html", title='Cadastrar Produto', form = form)
+
+    img_1= request.files.get('image_1')
+    img_2= request.files.get('image_2')
+    img_3= request.files.get('image_3')
+
+    if request.method == 'POST':
+        if img_1:
+            photos.save(request.files.get('image_1'))
+        if img_2:
+            photos.save(request.files.get('image_2'))
+        if img_3:    
+            photos.save(request.files.get('image_3'))
+        db.session.commit()
+    return render_template("produtos/add_produto.html", title='Cadastrar Produto', form = form, marcas = marcas, categorias = categorias)

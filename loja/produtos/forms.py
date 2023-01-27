@@ -9,9 +9,9 @@ class Addprodutos(Form):
     price = IntegerField('Preço: ',[validators.DataRequired()])
     stock = IntegerField('Estoque: ',[validators.DataRequired()])
 
-    image_1 = FileField('Imagem 1: ',validators=[FileRequired(),FileAllowed(['jpg', 'jpeg', 'png', 'gif'])])
-    image_2 = FileField('Imagem 2: ',validators=[FileRequired(),FileAllowed(['jpg', 'jpeg', 'gif'])])
-    image_3 = FileField('Imagem 3: ',validators=[FileRequired(),FileAllowed(['jpg', 'jpeg', 'png', 'gif'])])
+    image_1 = FileField('Imagem 1: ',validators=[FileRequired(),FileAllowed(['jpg', 'jpeg', 'png', 'gif','webp','svg', 'tiff', 'bmp', 'psd'])])
+    image_2 = FileField('Imagem 2: ',validators=[FileAllowed(['jpg', 'jpeg', 'png', 'gif','webp','svg', 'tiff', 'bmp', 'psd'])])
+    image_3 = FileField('Imagem 3: ',validators=[FileAllowed(['jpg', 'jpeg', 'png', 'gif','webp','svg', 'tiff', 'bmp', 'psd'])])
 
     
     

@@ -2,28 +2,48 @@
 
 {% block conteudo %}
 <div class="container mt-2">
-    <div class="col-md-3"></div>
-    <div class="col-md-8">
-       <h2 class="text-center bg-primary p-2" >Adicionar Produtos</h2>
-        {% from 'formulario.html' import render_field%}
-        <form action="" enctype="multipart/form-data" method="POST">
-            {{ render_field(form.name, class='form-control', placeholder='Nome do Produto')}}
-            {{ render_field(form.color, class='form-control', placeholder='Cor do Produto')}}
-            {{ render_field(form.discount, class='form-control', placeholder='Desconto')}}
-            {{ render_field(form.discription, class='form-control', placeholder='Descrição do Produto')}}
-            {{ render_field(form.price, class='form-control', placeholder='Preço do Produto')}}
-            {{ render_field(form.stock, class='form-control', placeholder='Estoque')}}
-            <div class="container">
-                <div class="row">
-                    <div>{{ render_field(form.image_1, class='form-control', placeholder='')}}</div>
-                    <div>{{ render_field(form.image_2, class='form-control', placeholder='')}}</div>
-                    <div>{{ render_field(form.image_3, class='form-control', placeholder='')}}</div>
-                </div>
-            </div>
-            <button class="btn btn-primary mt-4" type="submit">Cadastrar Produto</button>
-        </form>
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+           <h2 style="border-radius:10px ;" class="text-center text-light bg-primary p-2" >Adicionar Produtos</h2>
+            {% from 'formulario.html' import render_field%}
+            <form action="" enctype="multipart/form-data" method="POST">
+                {{ render_field(form.name, class='form-control', placeholder='Nome do Produto')}}
+                {{ render_field(form.color, class='form-control', placeholder='Cor do Produto')}}
+                {{ render_field(form.discount, class='form-control', placeholder='Desconto')}}
+                {{ render_field(form.discription, class='form-control', placeholder='Descrição do Produto')}}
+
+
+                <label style="font-weight: bold;" class="form-label " for="marca">Adicionar uma marca:</label>
+                <select name="marca" id="marca" class="form-select" required>
+                    {% for marca in marcas %}
+                        <option value="{{marca.id}}">{{marca.name}}</option>
+                    {% endfor %}
+
+                </select>
+
+                <label style="font-weight: bold;" class="form-label " for="categoria">Adicionar uma categoria:</label>
+                <select name="categoria" id="categoria" class="form-select" required>
+                    {% for categoria in categorias %}
+                        <option value="{{categoria.id}}">{{categoria.name}}</option>
+                    {% endfor %}
+
+                </select>
+
+
+                {{ render_field(form.price, class='form-control', placeholder='Preço do Produto')}}
+                {{ render_field(form.stock, class='form-control', placeholder='Estoque')}}
+
+                    <div class="row">
+                        <div id="formfile" class="col-md-4 ">{{ render_field(form.image_1, placeholder='')}}</div>
+                        <div id="formfile" class="col-md-4">{{ render_field(form.image_2, placeholder='')}}</div>
+                        <div id="formfile" class="col-md-4">{{ render_field(form.image_3, placeholder='')}}</div>
+                    </div>
+                <button class="btn btn-primary mt-4" type="submit">Cadastrar Produto</button>
+            </form>
+        </div>
+        <div class="col-md-2"></div>
     </div>
-    <div class="col-md-2"></div>
 </div>
 
 {% endblock conteudo %}

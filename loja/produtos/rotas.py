@@ -1,11 +1,14 @@
-from flask import request, redirect, render_template, url_for, flash
-from .forms import Addprodutos
+from flask import request, redirect, render_template, url_for, flash, session
 from loja import app, db, photos
 from .models import Marca, Categoria, Ad_produtos
+from .forms import Addprodutos
 import os, secrets
 
 @app.route("/add_marca", methods = ['GET', 'POST'])
 def add_marca():
+    if not session.get('email'):
+        flash("Realize o login para acessar a página",'primary')
+        return redirect(url_for('login'))
 
     if request.method == 'POST':
         getmarca = request.form.get('marca')
@@ -18,6 +21,9 @@ def add_marca():
 
 @app.route("/add_categoria", methods = ['GET', 'POST'])
 def add_cat():
+    if not session.get('email'):
+        flash("Realize o login para acessar a página",'primary')
+        return redirect(url_for('login'))
 
     if request.method == 'POST':
         getcategoria = request.form.get('categoria')
@@ -30,6 +36,10 @@ def add_cat():
 
 @app.route("/add_produto", methods=['GET','POST'])
 def add_produto():
+    if not session.get('email'):
+        flash("Realize o login para acessar a página",'primary')
+        return redirect(url_for('login'))
+    
     marcas = Marca.query.all()
     categorias = Categoria.query.all()
     form = Addprodutos(request.form)

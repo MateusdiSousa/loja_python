@@ -1,16 +1,19 @@
 from flask import render_template, request, url_for, redirect, flash, session
-
-from loja import app, db
+from loja.produtos.models import Ad_produtos, Marca, Categoria
+from loja import app, db, photos
 from .forms import RegistrationForm, LoginForm
 from .models import user
 from loja import bcrypt
+import os, secrets
+
 
 @app.route('/admin')
 def admin(): 
-    if 'email' not in session:
-        flash("Realize o login para acessar a página",'danger')
-        return redirect(url_for(login))
-    return render_template('admin/index.html', title='Página Administrativa')
+    if not session.get('email'):
+        flash("Realize o login para acessar a página",'primary')
+        return redirect(url_for('login'))
+    produtos = Ad_produtos.query.all()
+    return render_template('admin/index.html', title='Página Administrativa', produtos = produtos)
 
 @app.route('/registrar', methods=['GET', 'POST'])
 def register():
@@ -43,3 +46,15 @@ def login():
         else:
             flash('Conta não existe','danger')
     return render_template('admin/login.html',form=form, title='Login')
+
+@app.route('/logout')
+def logout():
+    session['email'] = None
+    return redirect(url_for('login'))
+
+@app.route('/delete/produto/<int:id>', methods=['GET', 'POST'])
+def delete_produto(id):
+    produto = Ad_produtos.query.filter_by(id = id).first()
+    db.session.delete(produto)
+    db.session.commit()
+    return redirect(url_for('admin'))

@@ -2,13 +2,13 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_uploads import IMAGES, UploadSet, configure_uploads, patch_request_class
+from flask_session import Session
 
 
 # create the extension
 import os
 #diretório onde será enviado as imagens do banco
 basedir = os.path.abspath(os.path.dirname(__file__))
-
 # create the app
 app = Flask(__name__)
 # configure the SQLite database, relative to the app instance folder
@@ -21,6 +21,11 @@ db = SQLAlchemy(app)
 db.init_app(app)
 
 bcrypt = Bcrypt(app)
+
+#flask session
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 #configuração do destino das imagens no banco
 ALLOWED_EXTENSIONS = {'png', 'jpeg', 'jpg', 'gif', 'svg', 'gif', 'webp'}

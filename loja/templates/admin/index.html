@@ -2,5 +2,37 @@
 
 {% block conteudo %}
 
+<div class="container">
+    <table class="table table-small">
+        <thead>
+            <th>Serial</th>
+            <th>Produto</th>
+            <th>Preço</th>
+            <th>Desconto</th>
+            <th>Fabricante</th>
+            <th>Imagem</th>
+            <th>Editar</th>
+            <th>Deletar</th>
+
+        </thead>
+        <tbody>
+            {% for produto in produtos %}
+                <tr>
+                    <td>{{produto.id}}</td>
+                    <td>{{produto.name}}</td>
+                    <td>{{produto.price}}</td>
+                    <td>{{produto.discount}}</td>
+                    <td>{{produto.marca.name}}</td>
+                    <td><img style="width: 100px; height: 100px;" src="{{url_for('static', filename ='images/'+ produto.img_1)}}" alt=""></td>
+                    <td><a href="">Editar</a></td>
+                    <td><a href="{{url_for('delete_produto', id = produto.id)}}">Delete</a></td>
+                   
+                </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+    
+</div>
 
 {% endblock conteudo %}

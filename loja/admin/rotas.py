@@ -1,7 +1,7 @@
 from flask import render_template, request, url_for, redirect, flash, session
 from loja.produtos.models import Ad_produtos, Marca, Categoria
 from loja import app, db, photos
-from .forms import RegistrationForm, LoginForm
+from .forms import RegistrationForm, LoginForm, EditProduto
 from .models import user
 from loja import bcrypt
 import os, secrets
@@ -58,3 +58,41 @@ def delete_produto(id):
     db.session.delete(produto)
     db.session.commit()
     return redirect(url_for('admin'))
+
+@app.route('/edit/produto/<int:id>', methods = ['GET', 'POST'])
+def edit_produto(id):
+    if not session.get('email'):
+        flash("Realize o login para acessar a página",'primary')
+        return redirect(url_for('login'))
+    
+    form = EditProduto(request.form)
+    marca = Marca.query.all()
+    categoria = Categoria.query.all()
+    #PEGANDO AS IMAGENS DO FORMS
+    img_1= request.files.get('image_1')
+    img_2= request.files.get('image_2')
+    img_3= request.files.get('image_3')
+    produto = Ad_produtos.query.filter_by(id = id).first()
+
+    if request.method == 'POST':
+        produto.name = form.name.data
+        produto.color = form.color.data
+        produto.discount = form.discount.data
+        produto.discription = form.discription.data
+        produto.price = form.price.data
+        produto.stock = form.stock.data
+
+        #Mandando as imagens do forms para o banco de dados, e para a 'images' do servidor
+        produto.img_1 = photos.save(img_1, name= secrets.token_hex(10)+'.')
+        if img_2:
+            produto.img_2 = photos.save(img_2, name= secrets.token_hex(10)+'.')
+        if img_3:
+            produto.img_3 = photos.save(img_3, name= secrets.token_hex(10)+'.')
+
+        produto.marca_id = request.form.get('marca')
+        produto.categoria_id = request.form.get('categoria')
+
+        db.session.commit()
+        return redirect(url_for("admin"))
+    return render_template('admin/edit.html',produto = produto, form = form, marcas = marca, categorias = categoria, title = 'Edição de Produto')
+

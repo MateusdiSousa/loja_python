@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+{% from "formulario.html" import render_field %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <form method='POST' enctype="multipart/form-data">
+        <dl>
+          {{ render_field(form.name, value = produto.name, class = 'form-control') }}
+          {{ render_field(form.color, value = produto.color, class = 'form-control') }}
+          {{ render_field(form.discount, value = produto.discount, class = 'form-control') }}
+          {{ render_field(form.discription, value = produto.discription, class = 'form-control') }}
+          {{ render_field(form.price, value = produto.price, class = 'form-control') }}
+          {{ render_field(form.stock, value = produto.stock, class = 'form-control') }}
+      
+          <label style="font-weight: bold;" class="form-label " for="marca">Adicionar uma marca:</label>
+          <select name="marca" id="marca" class="form-select" required>
+              {% for marca in marcas %}
+                  <option value="{{marca.id}}">{{marca.name}}</option>
+              {% endfor %}
+      
+          </select>
+      
+          <label style="font-weight: bold;" class="form-label " for="categoria">Adicionar uma categoria:</label>
+          <select name="categoria" id="categoria" class="form-select" required>
+              {% for categoria in categorias %}
+                  <option value="{{categoria.id}}">{{categoria.name}}</option>
+              {% endfor %}
+      
+          </select>
+      
+          {{ render_field(form.image_1,value = img_1, class = 'form-control') }}
+          {{ render_field(form.image_2,value = img_2, class = 'form-control') }}
+          {{ render_field(form.image_3,value = img_3, class = 'form-control') }}
+      
+        </dl>
+        <p><input class="btn btn-primary" type=submit value=Atualizar>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock conteudo %}

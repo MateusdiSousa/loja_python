@@ -5,10 +5,11 @@ from flask_uploads import IMAGES, UploadSet, configure_uploads, patch_request_cl
 from flask_session import Session
 
 
-# create the extension
-import os
 #diretório onde será enviado as imagens do banco
+import os
+
 basedir = os.path.abspath(os.path.dirname(__file__))
+
 # create the app
 app = Flask(__name__)
 # configure the SQLite database, relative to the app instance folder

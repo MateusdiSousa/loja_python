@@ -1,7 +1,8 @@
 from flask import render_template, request, url_for, redirect, flash, session
-from loja.produtos.models import Ad_produtos, Marca, Categoria
+from loja.produtos.models import Ad_produtos, Categoria, Marca
 from loja import app, db, photos
-from .forms import RegistrationForm, LoginForm, EditProduto
+from .forms import RegistrationForm, LoginForm
+from ..produtos.forms import Addprodutos
 from .models import user
 from loja import bcrypt
 import os, secrets
@@ -54,6 +55,9 @@ def logout():
 
 @app.route('/delete/produto/<int:id>', methods=['GET', 'POST'])
 def delete_produto(id):
+    if not session.get('email'):
+        flash("Realize o login para acessar a página",'primary')
+        return redirect(url_for('login'))
     produto = Ad_produtos.query.filter_by(id = id).first()
     db.session.delete(produto)
     db.session.commit()
@@ -65,7 +69,7 @@ def edit_produto(id):
         flash("Realize o login para acessar a página",'primary')
         return redirect(url_for('login'))
     
-    form = EditProduto(request.form)
+    form = Addprodutos(request.form)
     marca = Marca.query.all()
     categoria = Categoria.query.all()
     #PEGANDO AS IMAGENS DO FORMS
@@ -96,3 +100,47 @@ def edit_produto(id):
         return redirect(url_for("admin"))
     return render_template('admin/edit.html',produto = produto, form = form, marcas = marca, categorias = categoria, title = 'Edição de Produto')
 
+@app.route('/categoria')
+def categoria():
+    if not session.get('email'):
+        flash("Realize o login para acessar a página",'primary')
+        return redirect(url_for('login'))
+    categoria = Categoria.query.order_by(Categoria.id).all()
+
+    return render_template('admin/marca.html', title='Página Categoria', categorias = categoria)
+
+@app.route('/att_categoria<int:id>', methods=['GET', 'POST'])
+def att_categoria(id):
+    if not session.get("email"):
+        flash("Realize o login para acessar a página",'primary')
+        return redirect(url_for('login'))
+    categoria = Categoria.query.filter_by(id = id).first()
+    if request.method == 'POST':
+        categoria.name = request.form.get('categoria')
+        db.session.commit()
+        flash('A categoria foi atualizada','success')
+        return redirect(url_for('categoria'))
+    return render_template("admin/att_categoria_marca.html", categoria = categoria, )
+
+@app.route('/marcas')
+def marcas():
+    if not session.get('email'):
+        flash("Realize o login para acessar a página",'primary')
+        return redirect(url_for('login'))
+    marcas = Marca.query.order_by(Marca.id).all()
+
+    return render_template('admin/marca.html', title='Página Marcas', marcas = marcas)
+
+@app.route('/att_marca/<int:id>', methods = ['GET', 'POST'])
+def att_marca(id):
+    if not session.get("email"):
+        flash("Realize o login para acessar a página",'primary')
+        return redirect(url_for('login'))
+    marcas =  Marca.query.filter_by(id = id).first()
+    if request.method == 'POST':
+        att_marca = request.form.get('marca')
+        marcas.name = att_marca
+        db.session.commit()
+        flash('A Marca foi atualizada','success')
+        return redirect(url_for('marcas'))
+    return render_template("admin/att_categoria_marca.html",title = 'Atualização de Marca', marcas = marcas )

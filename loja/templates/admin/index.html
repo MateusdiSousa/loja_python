@@ -3,36 +3,42 @@
 {% block conteudo %}
 
 <div class="container mt-2">
-    <table class="table table-columns table-bordered">
-        <thead>
-            <th>Serial</th>
-            <th>Produto</th>
-            <th>Preço</th>
-            <th>Desconto</th>
-            <th>Fabricante</th>
-            <th>Imagem</th>
-            <th>Editar</th>
-            <th>Deletar</th>
-
-        </thead>
-        <tbody>
-            {% for produto in produtos %}
-                <tr>
-                    <td>{{produto.id}}</td>
-                    <td>{{produto.name}}</td>
-                    <td>{{produto.price}}</td>
-                    <td>{{produto.discount}}</td>
-                    <td>{{produto.marca.name}}</td>
-                    <td><img style="width: 100px; height: 100px;" src="{{url_for('static', filename ='images/'+ produto.img_1)}}" alt=""></td>
-                    <td><a class="btn btn-br btn-primary" href="{{url_for('edit_produto', id = produto.id)}}">Editar</a></td>
-                    <td><a class="btn btn-br btn-danger" href="{{url_for('delete_produto', id = produto.id)}}">Delete</a></td>
-                   
-                </tr>
-            {% endfor %}
-        </tbody>
-
-    </table>
-    
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">            
+            <table class="table table-columns table-bordered">
+                <thead>
+                    <th>Serial</th>
+                    <th>Produto</th>
+                    <th>Preço</th>
+                    <th>Desconto</th>
+                    <th>Fabricante</th>
+                    <th>Imagem</th>
+                    <th>Editar</th>
+                    <th>Deletar</th>
+                </thead>
+                <tbody>
+                    {% for produto in produtos %}
+                        <tr>
+                            <td>{{produto.id}}</td>
+                            <td>{{produto.name}}</td>
+                            <td>{{produto.price}}</td>
+                            <td>{{produto.discount}}</td>
+                            <td>{{produto.marca.name}}</td>
+                            <td><img style="width: 100px; height: 100px;" src="{{url_for('static', filename ='images/'+ produto.img_1)}}" alt=""></td>
+                            <td><a class="btn btn-br btn-primary" href="{{url_for('edit_produto', id = produto.id)}}">Editar</a></td>
+                            <td><a class="btn btn-br btn-danger" onclick="return confirm('deseja excluir o produto?')" href="{{url_for('delete_produto', id = produto.id)}}">Delete</a></td>
+            
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9"></div>
+        <div class="col-md-2"><a class="btn btn-primary" href="{{url_for('add_produto')}}">Adicionar Produto</a></div>
+    </div>
 </div>
 
 {% endblock conteudo %}

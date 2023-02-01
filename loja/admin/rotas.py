@@ -1,4 +1,4 @@
-from flask import render_template, request, url_for, redirect, flash, session
+from flask import render_template, request, url_for, redirect, flash, session, current_app
 from loja.produtos.models import Ad_produtos, Categoria, Marca
 from loja import app, db, photos
 from .forms import RegistrationForm, LoginForm
@@ -73,31 +73,58 @@ def edit_produto(id):
     marca = Marca.query.all()
     categoria = Categoria.query.all()
     #PEGANDO AS IMAGENS DO FORMS
+    
+    produto = Ad_produtos.query.filter_by(id = id).first()
     img_1= request.files.get('image_1')
     img_2= request.files.get('image_2')
     img_3= request.files.get('image_3')
-    produto = Ad_produtos.query.filter_by(id = id).first()
+
+    
 
     if request.method == 'POST':
         produto.name = form.name.data
         produto.color = form.color.data
         produto.discount = form.discount.data
-        produto.discription = form.discription.data
-        produto.price = form.price.data
-        produto.stock = form.stock.data
-
-        #Mandando as imagens do forms para o banco de dados, e para a 'images' do servidor
-        produto.img_1 = photos.save(img_1, name= secrets.token_hex(10)+'.')
-        if img_2:
-            produto.img_2 = photos.save(img_2, name= secrets.token_hex(10)+'.')
-        if img_3:
-            produto.img_3 = photos.save(img_3, name= secrets.token_hex(10)+'.')
 
         produto.marca_id = request.form.get('marca')
         produto.categoria_id = request.form.get('categoria')
 
+        produto.discription = form.discription.data
+        produto.price = form.price.data
+        produto.stock = form.stock.data
+
+        #atualização das imagens do banco dados e do servidor, (agora ocorre apenas a troca de imagens ao inves de sempre adicionar uma imagem nova)
+        #obs: foi necessário utilizar a biblioteca os, extensão do flask 'current_app' e a variavel photos 
+        if img_1:
+            try:
+
+                os.unlink(os.path.join(current_app.root_path,'static/images/'+produto.img_1))
+                produto.img_1 = photos.save(img_1, name= secrets.token_hex(10)+'.')
+            except:
+                produto.img_1 = photos.save(img_1, name= secrets.token_hex(10)+'.')
+
+        if img_2:
+            try:
+                os.unlink(os.path.join(current_app.root_path,'static/images/'+produto.img_2))
+                produto.img_2 = photos.save(img_2, name= secrets.token_hex(10)+'.')
+            except:
+                produto.img_2 = photos.save(img_2, name = secrets.token_hex(10)+'.')
+        
+        if img_3:
+            try:
+                os.unlink(os.path.join(current_app.root_path,'static/images/'+produto.img_3))
+                produto.img_3 = photos.save(img_3, name= secrets.token_hex(10)+'.')
+            except:
+                produto.img_2 = photos.save(img_3, name = secrets.token_hex(10)+'.')
+                
         db.session.commit()
+        flash('Produto {} foi atualizado com sucesso'.format(produto.name),'primary')
         return redirect(url_for("admin"))
+    
+
+    #mostrar o valor atual das várias de textarea no forms
+    form.color.data = produto.color
+    form.discription.data = produto.discription
     return render_template('admin/edit.html',produto = produto, form = form, marcas = marca, categorias = categoria, title = 'Edição de Produto')
 
 @app.route('/categoria')
@@ -122,6 +149,17 @@ def att_categoria(id):
         return redirect(url_for('categoria'))
     return render_template("admin/att_categoria_marca.html", categoria = categoria, )
 
+@app.route('/del_categoria/<int:id>', methods=['GET', 'POST'])
+def del_cat(id):
+    if not session.get("email"):
+        flash("Realize o login para acessar a página",'primary')
+        return redirect(url_for('login'))
+    categoria = Categoria.query.filter_by(id = id).first()
+    db.session.delete(categoria)
+    db.session.commit()
+    return redirect(url_for('categoria'))
+
+
 @app.route('/marcas')
 def marcas():
     if not session.get('email'):
@@ -144,3 +182,13 @@ def att_marca(id):
         flash('A Marca foi atualizada','success')
         return redirect(url_for('marcas'))
     return render_template("admin/att_categoria_marca.html",title = 'Atualização de Marca', marcas = marcas )
+
+@app.route('/del_marca/<int:id>', methods=['GET', 'POST'])
+def del_marca(id):
+    if not session.get("email"):
+        flash("Realize o login para acessar a página",'primary')
+        return redirect(url_for('login'))
+    marca = Marca.query.filter_by(id = id).first()
+    db.session.delete(marca)
+    db.session.commit()
+    return redirect(url_for('marcas'))

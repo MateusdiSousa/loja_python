@@ -22,7 +22,7 @@
                                 <td>{{marca.id}}</td>
                                 <td>{{marca.name}}</td>
                                 <td><a class="btn btn-sm btn-outline-primary" href="{{url_for('att_marca', id=marca.id)}}">Editar</a></td>
-                                <td><a class="btn btn-sm btn-outline-danger " href="">Deletar</a></td>
+                                <td><a class="btn btn-sm btn-outline-danger " onclick="return confirm('Deseja excluir a marca?')" href="{{url_for('del_marca', id=marca.id)}}">Deletar</a></td>
                             </tr>
                         {% endfor %}
                     {% endif %}
@@ -33,13 +33,22 @@
                                 <td>{{categoria.id}}</td>
                                 <td>{{categoria.name}}</td>
                                 <td><a class="btn btn-sm btn-outline-primary" href="{{url_for('att_categoria', id=categoria.id)}}">Editar</a></td>
-                                <td><a class="btn btn-sm btn-outline-danger " href="">Deletar</a></td>
+                                <td><a class="btn btn-sm btn-outline-danger " onclick="return confirm('Deseja excluir a categoria?')" href="{{url_for('del_cat', id=categoria.id)}}">Deletar</a></td>
                             </tr>
+                            
+                            
                         {% endfor %}
                     {% endif %}
+                  
                 </tbody>
             </table>
-        
+            {% if marcas %}
+                <a class= 'btn btn-primary' href="{{url_for('add_marca')}}">Adicionar Marca</a>
+            {% endif %}
+
+            {% if categorias %}
+                <a class= 'btn btn-primary' href="{{url_for('add_cat')}}">Adicionar categoria</a>
+            {% endif %}
         
         </div>
     </div>

@@ -31,7 +31,7 @@ def add_cat():
         db.session.add(categoria)
         db.session.commit()
         flash(f'A categoria {getcategoria} foi adicionada com sucesso','success')
-        return redirect(url_for('add_marca'))
+        return redirect(url_for('add_cat'))
     return render_template("produtos/add_marca.html", title='Cadastrar Categoria')
 
 @app.route("/add_produto", methods=['GET','POST'])

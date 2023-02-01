@@ -17,6 +17,7 @@
       
           <label style="font-weight: bold;" class="form-label " for="marca">Adicionar uma marca:</label>
           <select name="marca" id="marca" class="form-select" required>
+            <option value="{{produto.marca.id}}">{{produto.marca.name}}</option>
               {% for marca in marcas %}
                   <option value="{{marca.id}}">{{marca.name}}</option>
               {% endfor %}
@@ -25,6 +26,7 @@
       
           <label style="font-weight: bold;" class="form-label " for="categoria">Adicionar uma categoria:</label>
           <select name="categoria" id="categoria" class="form-select" required>
+              <option value="{{produto.categoria.id}}">{{produto.categoria.name}}</option>
               {% for categoria in categorias %}
                   <option value="{{categoria.id}}">{{categoria.name}}</option>
               {% endfor %}

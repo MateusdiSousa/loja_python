@@ -7,6 +7,13 @@ from .models import user
 from loja import bcrypt
 import os, secrets
 
+@app.route('/')
+def home():
+    if not session.get('email'):
+        produtos = Ad_produtos.query.filter(Ad_produtos.stock > 0)
+        return render_template('clientes/index.html', produtos = produtos, title = 'Home')
+    else:
+        return redirect(url_for('admin'))
 
 @app.route('/admin')
 def admin(): 

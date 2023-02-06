@@ -22,7 +22,31 @@
                                 <td>{{marca.id}}</td>
                                 <td>{{marca.name}}</td>
                                 <td><a class="btn btn-sm btn-outline-primary" href="{{url_for('att_marca', id=marca.id)}}">Editar</a></td>
-                                <td><a class="btn btn-sm btn-outline-danger " onclick="return confirm('Deseja excluir a marca?')" href="{{url_for('del_marca', id=marca.id)}}">Deletar</a></td>
+                                <td>
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{marca.id}}">
+                                        Deletar
+                                    </button>
+                                </td>
+                                
+                                <!-- Modal -->
+                                <div class="modal fade" id="staticBackdrop{{marca.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">{{marca.name}}</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                        Deseja excluir a fabricante {{marca.name}}?
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                        <a class="btn btn-danger" href="{{url_for('del_marca', id=marca.id)}}">Deletar</a>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
                             </tr>
                         {% endfor %}
                     {% endif %}
@@ -33,9 +57,32 @@
                                 <td>{{categoria.id}}</td>
                                 <td>{{categoria.name}}</td>
                                 <td><a class="btn btn-sm btn-outline-primary" href="{{url_for('att_categoria', id=categoria.id)}}">Editar</a></td>
-                                <td><a class="btn btn-sm btn-outline-danger " onclick="return confirm('Deseja excluir a categoria?')" href="{{url_for('del_cat', id=categoria.id)}}">Deletar</a></td>
+                                <td>
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{categoria.id}}">
+                                        Deletar
+                                    </button>
+                                </td>
+                                
+                                <!-- Modal -->
+                                <div class="modal fade" id="staticBackdrop{{categoria.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">{{categoria.name}}</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                        Deseja excluir a categoria {{categoria.name}}?
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                        <a class="btn btn-danger" href="{{url_for('del_cat', id=categoria.id)}}">Deletar</a>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
                             </tr>
-                            
                             
                         {% endfor %}
                     {% endif %}

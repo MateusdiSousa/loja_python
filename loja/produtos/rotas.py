@@ -43,12 +43,11 @@ def add_produto():
     marcas = Marca.query.all()
     categorias = Categoria.query.all()
     form = Addprodutos(request.form)
-
     img_1= request.files.get('image_1')
     img_2= request.files.get('image_2')
     img_3= request.files.get('image_3')
 
-    if request.method == 'POST':
+    if request.method == 'POST': 
         name = form.name.data
         color = form.color.data
         discount = form.discount.data

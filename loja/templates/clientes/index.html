@@ -6,8 +6,12 @@
         {% for produto in produtos%}
             <div class="col-md-3">
                 <div class="mt-2"></div>
-                <div class="card">
-                    <div class="card-body"></div>
+                <div style="align-items: center; display: flex;" class="card">
+                    <div style="display: block;" class="card-body">
+                        <h6 class="text-center">{{produto.name}}</h6>
+                        <img style="width: 9rem; height:8rem;" class="img-fluid" alt="..." src="{{url_for('static', filename='images/'+ produto.img_1)}}" alt="">
+                        <h5 class="text-center">R${{produto.price}}</h5>
+                    </div>
                     <div class="card-footer">
                         <a href="#" class="float-left btn btn-sm btn-primary" >Detalhes do Produto</a>
                         <a href="#" class="float-left btn btn-sm btn-primary mt-1" >Adicionar ao Carrinho</a>

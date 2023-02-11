@@ -4,6 +4,41 @@ from .models import Marca, Categoria, Ad_produtos
 from .forms import Addprodutos
 import os, secrets
 
+
+@app.route('/')
+def home():
+    if not session.get('email'):
+        #configuração da paginação
+        page = request.args.get('page', 1, type=int)
+        produtos = Ad_produtos.query.paginate(page=page, per_page=2)
+
+        marcas = Marca.query.join(Ad_produtos , (Marca.id == Ad_produtos.marca_id)).all()
+        categorias = Categoria.query.join(Ad_produtos, (Categoria.id == Ad_produtos.categoria_id))
+        return render_template('produtos/index.html',categorias = categorias, marcas = marcas, produtos = produtos, title = 'Home')
+    else:
+        return redirect(url_for('admin'))
+
+#Filtragem de produtos por categoria e marca
+
+@app.route('/categoria/<int:id>')
+def filter_cat(id):
+    page = request.args.get('page', 1, type=int)
+    produtos_filter_cat = Ad_produtos.query.filter(Ad_produtos.categoria_id == id).paginate(page=page, per_page=2)
+    marcas = Marca.query.join(Ad_produtos , (Marca.id == Ad_produtos.marca_id)).all()
+    categorias = Categoria.query.join(Ad_produtos, (Categoria.id == Ad_produtos.categoria_id)).all()
+    return render_template('produtos/index.html', produtos = produtos_filter_cat, categorias = categorias, marcas = marcas)
+
+@app.route('/filter/marca/<int:id>')
+def filter_marca(id):
+    page = request.args.get('page', 1, type=int)
+    produtos_filter_marca = Ad_produtos.query.filter(Ad_produtos.marca_id == id).paginate(page=page, per_page=2)
+    marcas = Marca.query.join(Ad_produtos , (Marca.id == Ad_produtos.marca_id)).all()
+    categorias = Categoria.query.join(Ad_produtos, (Categoria.id == Ad_produtos.categoria_id)).all()
+    return render_template('produtos/index.html', produtos = produtos_filter_marca, categorias = categorias, marcas = marcas)
+
+
+
+
 @app.route("/add_marca", methods = ['GET', 'POST'])
 def add_marca():
     if not session.get('email'):
@@ -44,7 +79,7 @@ def add_produto():
     categorias = Categoria.query.all()
     form = Addprodutos(request.form)
     img_1= request.files.get('image_1')
-    img_2= request.files.get('image_2')
+    img_4= request.files.get('image_4')
     img_3= request.files.get('image_3')
 
     if request.method == 'POST': 
@@ -62,16 +97,16 @@ def add_produto():
            image_1 = photos.save(img_1, name= secrets.token_hex(10)+'.')
         else:
             image_1 = ''
-        if img_2:
-           image_2 = photos.save(img_2, name= secrets.token_hex(10)+'.')
+        if img_4:
+           image_4 = photos.save(img_4, name= secrets.token_hex(10)+'.')
         else:
-            image_2 = ''
+            image_4 = ''
         if img_3:    
            image_3 =photos.save(img_3, name= secrets.token_hex(10)+'.')
         else:
             image_3 = ''
 
-        produto = Ad_produtos(name=name, color=color, discount=discount, discription=discription, price= price, stock=stock, marca_id = marca, categoria_id = categoria, img_1 = image_1, img_2 = image_2, img_3 = image_3 )
+        produto = Ad_produtos(name=name, color=color, discount=discount, discription=discription, price= price, stock=stock, marca_id = marca, categoria_id = categoria, img_1 = image_1, img_4 = image_4, img_3 = image_3 )
         db.session.add(produto)
         db.session.commit()
         flash('Produto {} foi adicionada com sucesso!'.format(name),'success')

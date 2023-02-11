@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+<div class="container">
+    <div class="row">
+        {% for produto in produtos.items%}
+        {% if produto.stock > 0 %}
+            <div class="col-md-3">
+                <div class="mt-2"></div>
+                <div style="align-items: center; display: flex;" class="card">
+                    <div class="card-body">
+                        <h6 class="text-center">{{produto.name}}</h6>
+                        <img style="width: 9rem; height:8rem;" class="img-fluid" alt="..." src="{{url_for('static', filename='images/'+ produto.img_1)}}" alt="">
+                        <h5 class="text-center">R${{produto.price}}</h5>
+                    </div>
+                    <div class="text-center card-footer">
+                        <a href="#" class="float-left btn btn-sm btn-primary" >Detalhes do Produto</a>
+                        <a href="#" class="float-left btn btn-sm btn-primary mt-1" >Adicionar ao Carrinho</a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}    
+        {% endfor %}
+
+
+        <!-- Paginação  -->
+        <div class="text-center mt-5">
+            <a href="{{ url_for('home', page=produtos.prev_num) }}" class="btn btn-outline-primary {% if produtos.page == 1 %}disabled{% endif %}">&laquo;
+            </a>
+            {% for page_num in produtos.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if page_num %}
+                {% if produtos.page == page_num %}
+                    <a href="{{ url_for('home', page=page_num) }}"class="btn btn-primary">{{ page_num }}</a>
+                {% else %}
+                    <a href="{{ url_for('home', page=page_num) }}" class="btn btn-outline-primary">{{ page_num }}</a>
+                {% endif %}
+
+                {% else %}
+                     ...
+                {% endif %}
+                {% endfor %}
+
+                <a href="{{ url_for('home', page=produtos.next_num) }}" class="btn btn-outline-primary {% if produtos.page == produtos.pages %}disabled{% endif %}">&raquo; </a>
+        </div>       
+{% endblock conteudo %}
